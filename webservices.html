@@ -1,0 +1,70 @@
+<html>
+    <head>
+        <style>
+            #innerhtml td{
+                border: 2px solid black;
+            }
+            table{
+                border-collapse: collapse;
+            }
+
+        </style>
+
+    </head>
+    <body>
+        <label>SEARCH HERE:</label>
+        <input type="text" id="search">
+        <button onclick="searchoption()">SUBMIT</button>
+        <table id="innerhtml">
+            <th>
+                <td>TITLE</td>
+                <td>CATEGORY</td>
+                <td>IAMGE</td>
+            </th>
+            
+        </table>
+        <table id="todisplay"></table>
+        <script>
+            var products;
+            var httprequest=new XMLHttpRequest();
+            httprequest.open("get","https://fakestoreapi.com/products");
+            httprequest.send();
+            httprequest.onreadystatechange=function(){
+                var productslist=document.getElementById("innerhtml");
+                console.log(httprequest.readyState);
+                if(httprequest.readyState==4){
+                //console.log(httprequest.responseText);
+                products=JSON.parse(httprequest.responseText);
+                productscontent="";
+               for(i=0;i<products.length;i++){
+              // console.log(products[i].title);
+             var product=products[i];
+             productscontent=productscontent+"<tr><td>"+product.title+"</td>"+"<td>"+product.category+"</td>"
+                +"<td>"+"<img height='50px' width='60px' src="+product.image+">"+"</td></tr>";
+               
+
+            }
+            productslist.innerHTML=productscontent;
+                console.log(httprequest.status);
+                }
+            }
+            function searchoption(){
+                var searchdata=document.getElementById("search").value;
+                console.log(searchdata);
+                var todisplay=document.getElementById("todisplay");
+                document.getElementById("innerhtml").innerHTML="";
+                var  productsdisplayed="";
+                for(var i=0;i<products.length;i++){
+                    var product=products[i]
+                    if (searchdata==product.title){
+                        productsdisplayed=productsdisplayed + "<tr><td>"+product.title+"</td>"+"<td>"+product.category+"</td>"
+                        +"<td>" +"<img height='50px' width='60px' src="+product.image+">"+"</td></tr>";
+                        }
+                    todisplay.innerHTML=productsdisplayed;
+                    console.log(product.title);
+            }
+            }
+               </script>
+
+    </body>
+</html>
